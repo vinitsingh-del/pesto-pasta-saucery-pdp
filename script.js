@@ -2,21 +2,21 @@ const insert=`<section class="reviews" id="reviews"><div class="reviews-head"><p
 const made=document.querySelector('.made-spec');if(made){document.querySelector('.press').before(made)}
 
 
-/* Simple image-only hero change on scroll */
+
+/* Simple automatic hero fade; scrolling rotates Image 2 only */
 const simpleHero=document.querySelector('.hero-parallax');
 if(simpleHero){
-  let simpleFrame;
-  const updateSimpleHero=()=>{
-    simpleFrame=undefined;
-    const phase=Math.max(0,Math.min(1,window.scrollY/320));
-    const eased=phase*phase*(3-2*phase);
-    simpleHero.style.setProperty('--hero-progress',eased.toFixed(4));
-    simpleHero.style.setProperty('--hero-rotation',(-3+eased*9).toFixed(2)+'deg');
-    simpleHero.style.setProperty('--hero-lift',(10-eased*10).toFixed(1)+'px');
-    simpleHero.style.setProperty('--hero-scale',(.94+eased*.06).toFixed(3));
+  const heroTwo=simpleHero.querySelector('.hero-second-img');
+  let rotationFrame;
+  const rotateHeroTwo=()=>{
+    rotationFrame=undefined;
+    if(!simpleHero.classList.contains('is-image-two')) return;
+    const rotation=Math.max(-4,Math.min(22,window.scrollY*.025));
+    simpleHero.style.setProperty('--hero-scroll-rotation',rotation.toFixed(2)+'deg');
   };
-  const requestSimpleHero=()=>{if(simpleFrame===undefined)simpleFrame=requestAnimationFrame(updateSimpleHero)};
-  window.addEventListener('scroll',requestSimpleHero,{passive:true});
-  window.addEventListener('resize',requestSimpleHero,{passive:true});
-  updateSimpleHero();
+  window.setTimeout(()=>simpleHero.classList.add('is-image-two'),1100);
+  const requestRotation=()=>{if(rotationFrame===undefined)rotationFrame=requestAnimationFrame(rotateHeroTwo)};
+  window.addEventListener('scroll',requestRotation,{passive:true});
+  window.addEventListener('resize',requestRotation,{passive:true});
+  if(heroTwo) rotateHeroTwo();
 }
