@@ -36,3 +36,16 @@ html,body{max-width:100%;overflow-x:hidden}a,a:visited{color:inherit}button{font
 @media(prefers-reduced-motion:reduce){
   .hero-parallax .hero-shot:before,.hero-parallax .hero-second-img{transition:none;will-change:auto}
 }
+
+/* Final hero cleanup: natural height, no dead scroll space, no cropped ATC */
+.hero-parallax{height:auto;min-height:0;overflow:hidden;--hero-progress:0}
+.hero-parallax .hero-inner{position:relative;top:auto;height:auto;min-height:0;overflow:visible}
+.hero-parallax .hero-shot{overflow:hidden}
+.hero-parallax .hero-shot:before{opacity:calc(1 - var(--hero-progress));transform:scale(1);transition:opacity .12s linear}
+.hero-parallax .hero-second-img{opacity:var(--hero-progress);transform:translateY(var(--hero-lift,12px)) rotate(var(--hero-rotation,-3deg)) scale(var(--hero-scale,.94));transition:opacity .12s linear;pointer-events:none}
+@media(max-width:760px){
+  .hero-parallax{height:auto;min-height:0}
+  .hero-parallax .hero-inner{height:auto;min-height:0;overflow:visible}
+  .hero-parallax .hero-shot{height:205px;min-height:205px;margin:0 6px 12px}
+  .hero-parallax .hero-second-img{padding:0 2%;transform:translateY(var(--hero-lift,8px)) rotate(var(--hero-rotation,-2deg)) scale(var(--hero-scale,.94))}
+}
