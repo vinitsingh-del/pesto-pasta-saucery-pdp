@@ -1,23 +1,22 @@
 const insert=`<section class="reviews" id="reviews"><div class="reviews-head"><p class="kicker">From tables like yours</p><h2>SAUCE WORTH<br><i>TALKING ABOUT</i></h2><p>Bright, savoury, and made for the meals that become rituals.</p></div><div class="review-grid"><article><div class="stars">★★★★★</div><blockquote>“The easiest way to make a weeknight bowl feel special.”</blockquote><footer>— Early taste tester</footer></article><article><div class="stars">★★★★★</div><blockquote>“You can actually taste the basil. Nothing gets lost.”</blockquote><footer>— Early taste tester</footer></article><article><div class="stars">★★★★★</div><blockquote>“A jar that disappears faster than the pasta.”</blockquote><footer>— Early taste tester</footer></article></div></section><section class="coming"><div><p class="kicker cream">More doorways to open</p><h2>COMING<br><i>SOON</i></h2><p>Globally inspired sauces, each with a table of its own.</p></div><div class="sauce-roadmap"><div><span>01</span><strong>Ají Verde</strong><small>Perú · bright & herbaceous</small></div><div><span>02</span><strong>Chimichurri</strong><small>Argentina · green & garlicky</small></div><div><span>03</span><strong>Romesco</strong><small>Spain · smoky & sweet</small></div></div></section><section class="made-spec"><div><p class="kicker red">How it's made</p><h3>Cold-blended.<br><i>Never flat.</i></h3></div><div class="spec-list"><p><b>01</b><span>Fresh basil</span><small>Blended at peak colour</small></p><p><b>02</b><span>Good olive oil</span><small>Silky, rounded finish</small></p><p><b>03</b><span>Real parmesan</span><small>Deep savoury backbone</small></p><p><b>04</b><span>Lemon + pine nuts</span><small>Lift and texture in every spoonful</small></p></div></section>`;document.querySelector('.ingredients').insertAdjacentHTML('beforebegin',insert);let n=1;const qty=document.querySelector('#qty'),bag=document.querySelector('#bagCount'),toast=document.querySelector('#toast');document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>{n=b.dataset.q==='plus'?n+1:Math.max(1,n-1);qty.textContent=n}));document.querySelector('#add').addEventListener('click',()=>{bag.textContent=n;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2400)});const photo=document.querySelector('.restaurant-photo img');let ticking=false;window.addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(()=>{const y=window.scrollY;document.querySelector('.hero-shot')?.style.setProperty('--spoon-rotate',`${Math.max(-8,Math.min(14,y*.025))}deg`);if(photo){const r=photo.parentElement.getBoundingClientRect();const p=(innerHeight-r.top)/(innerHeight+r.height);photo.style.transform=`scale(1.08) translateY(${Math.max(-18,Math.min(18,(p-.5)*30))}px)`}ticking=false});ticking=true}},{passive:true});
 const made=document.querySelector('.made-spec');if(made){document.querySelector('.press').before(made)}
 
-/* Hero scroll lock: crossfade the pasta plate into the pesto spoon asset */
-const lockedHero=document.querySelector('.hero-parallax');
-if(lockedHero){
-  let heroFrame;
-  const updateLockedHero=()=>{
-    heroFrame=undefined;
-    const travel=Math.max(1,lockedHero.offsetHeight-innerHeight);
-    const raw=Math.max(0,Math.min(1,-lockedHero.getBoundingClientRect().top/travel));
-    const phase=Math.max(0,Math.min(1,(raw-.04)/.82));
+
+/* Simple image-only hero change on scroll */
+const simpleHero=document.querySelector('.hero-parallax');
+if(simpleHero){
+  let simpleFrame;
+  const updateSimpleHero=()=>{
+    simpleFrame=undefined;
+    const phase=Math.max(0,Math.min(1,window.scrollY/320));
     const eased=phase*phase*(3-2*phase);
-    lockedHero.style.setProperty('--hero-progress',eased.toFixed(4));
-    lockedHero.style.setProperty('--hero-rotation',(-7+eased*16).toFixed(2)+'deg');
-    lockedHero.style.setProperty('--hero-lift',(18-eased*18).toFixed(1)+'px');
-    lockedHero.style.setProperty('--hero-scale',(.9+eased*.1).toFixed(3));
+    simpleHero.style.setProperty('--hero-progress',eased.toFixed(4));
+    simpleHero.style.setProperty('--hero-rotation',(-3+eased*9).toFixed(2)+'deg');
+    simpleHero.style.setProperty('--hero-lift',(10-eased*10).toFixed(1)+'px');
+    simpleHero.style.setProperty('--hero-scale',(.94+eased*.06).toFixed(3));
   };
-  const requestHeroFrame=()=>{if(heroFrame===undefined)heroFrame=requestAnimationFrame(updateLockedHero)};
-  window.addEventListener('scroll',requestHeroFrame,{passive:true});
-  window.addEventListener('resize',requestHeroFrame,{passive:true});
-  updateLockedHero();
+  const requestSimpleHero=()=>{if(simpleFrame===undefined)simpleFrame=requestAnimationFrame(updateSimpleHero)};
+  window.addEventListener('scroll',requestSimpleHero,{passive:true});
+  window.addEventListener('resize',requestSimpleHero,{passive:true});
+  updateSimpleHero();
 }
